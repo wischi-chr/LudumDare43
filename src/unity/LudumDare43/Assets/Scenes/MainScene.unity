@@ -705,7 +705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectToFollow: {fileID: 1138364741}
   LockX: 0
-  LockY: 0
+  LockY: 1
   DebugInformation: 1
   DestinationDifference: {x: 0, y: 0, z: 0}
   Offset: 2
