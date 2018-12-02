@@ -5,12 +5,12 @@ using UnityEngine;
 public class SleighMovementController : MonoBehaviour
 {
     public float targetVelocity = 0;
-    public float velocityFriction = 0.9f;
-    public bool holdSpeed = false;
+    public float velocity;
+
+    public float acceleration = 1f;
+    public float deceleration = 10f;
     public bool IsEnabled = false;
 
-    float constantAcceleration = 0.1f;
-    float velocity;
     Transform sleighTransform;
     List<GameObject> huskies;
     List<Animator> huskyAnimators;
@@ -35,23 +35,24 @@ public class SleighMovementController : MonoBehaviour
 
     void UpdateVelocity()
     {
-        if (!holdSpeed)
-        {
-            //friction for targetVelocity
-            var deltaV = targetVelocity * velocityFriction * Time.deltaTime;
-            targetVelocity -= deltaV;
-        }
+        //friction for targetVelocity
+        //var deltaV = targetVelocity * velocityFriction * Time.deltaTime;
+        //targetVelocity -= deltaV;
 
-        if (targetVelocity > velocity)
-            velocity -= constantAcceleration;
+        if (velocity < targetVelocity)
+            velocity += acceleration * Time.deltaTime;
         else
-            velocity += constantAcceleration;
+            velocity -= deceleration * Time.deltaTime;
+
+        if ((velocity < 0.5f && targetVelocity < velocity) || velocity < 0)
+            velocity = 0;
 
         var locPos = sleighTransform.localPosition;
-        locPos.x += targetVelocity * Time.deltaTime;
+        locPos.x += velocity * Time.deltaTime;
         sleighTransform.localPosition = locPos;
 
-        SetHuskeySpeed(targetVelocity > 2.5f ? 1 : 0);
+
+        SetHuskeySpeed(velocity > 0.5f ? 1 : 0);
     }
 
     void SetHuskeySpeed(float speed)
