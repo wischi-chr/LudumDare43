@@ -50,6 +50,8 @@ public class SleighMovementController : MonoBehaviour
         var locPos = sleighTransform.localPosition;
         locPos.x += targetVelocity * Time.deltaTime;
         sleighTransform.localPosition = locPos;
+
+        SetHuskeySpeed(targetVelocity > 2.5f ? 1 : 0);
     }
 
     void SetHuskeySpeed(float speed)
@@ -58,7 +60,12 @@ public class SleighMovementController : MonoBehaviour
         {
             var abs = Mathf.Abs(speed);
             ani.SetFloat("Speed", abs);
-            ani.speed = abs * 0.1f;
+            Debug.Log("Set Speed: " + abs);
+            if(speed > 0)
+            {
+                ani.speed = abs * 0.5f;
+            }
+            ani.speed = 1;
         }
     }
 
