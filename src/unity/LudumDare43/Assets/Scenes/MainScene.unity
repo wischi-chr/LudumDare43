@@ -607,7 +607,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1051111176}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5661,8 +5661,8 @@ RectTransform:
   m_LocalScale: {x: 0.25000003, y: 0.25000003, z: 0.25000003}
   m_Children:
   - {fileID: 1281583531}
-  - {fileID: 407192582}
   - {fileID: 1627184203}
+  - {fileID: 407192582}
   m_Father: {fileID: 444044387}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10450,6 +10450,20 @@ MonoBehaviour:
   - {fileID: 111338746}
   - {fileID: 1341607446}
   HuskyAnimators: []
+--- !u!114 &1138364751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1138364741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 049c4f0d40aad7445824ef1aa53ad986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleHungerPointsPerSecond: 0.01
+  VelocityXPointFactor: 0.01
+  VelocityYPointFactor: 0.01
 --- !u!1 &1155361469
 GameObject:
   m_ObjectHideFlags: 0
@@ -20805,7 +20819,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1051111176}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20824,18 +20838,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.64705884, g: 0.25490198, b: 0.16078432, a: 1}
+  m_Color: {r: 0.4716981, g: 0.12538901, b: 0.042274818, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: cc5164c5aa94a6d458da9da58e3b3beb, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0

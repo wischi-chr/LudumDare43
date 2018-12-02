@@ -9,8 +9,7 @@ public class HudFoodDisplay : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        foodBarImage = GameObject.Find("hud-food-bar").GetComponent<Image>();
-        foodBarImage.type = Image.Type.Filled;
+        foodBarImage = GameObject.Find("hud-food-bar").GetComponent<Image>();   
     }
 
     // Update is called once per frame

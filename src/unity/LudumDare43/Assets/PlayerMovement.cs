@@ -51,8 +51,6 @@ public class PlayerMovement : MonoBehaviour
         var isOnFloor = IsOnElement("floor");
         var grounded = isOnSleight || isOnFloor;
 
-        Debug.Log(isOnSleight + ", " + isOnFloor);
-
         if (compRigidBody.velocity.y > 0.01f)
             isJumpKeyDown = false;
 
