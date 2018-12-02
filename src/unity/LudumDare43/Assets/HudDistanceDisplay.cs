@@ -18,6 +18,5 @@ public class HudDistanceDisplay : MonoBehaviour {
     void Update()
     {
         hudDistanceText.text = string.Format("{0:# ##0.0}", GlobalGameState.Distance);
-        Debug.Log("Update Hud");
     }
 }
