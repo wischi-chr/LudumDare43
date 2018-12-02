@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DieHuskyDie : MonoBehaviour {
-    public static bool Killable = false;
+    public bool Killable = false;
     public ParticleSystem ParticleSys;
 
     // Use this for initialization
@@ -13,18 +13,17 @@ public class DieHuskyDie : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        Debug.Log(this.name + ": " + Killable);
+		if(Killable && Input.GetKeyDown(KeyCode.F))
+        {
+            Kill();
+        }
 	}
 
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Guy")
         {
-            //Destroy(gameObject);
-            ParticleSys.Play();
-            var animator = GetComponent<Animator>();
-            animator.SetBool("Dead", true);
-
             Killable = true;
         }
     }
@@ -33,12 +32,14 @@ public class DieHuskyDie : MonoBehaviour {
     {
         if (other.name == "Guy")
         {
-            //Destroy(gameObject);
-            ParticleSys.Play();
-            var animator = GetComponent<Animator>();
-            animator.SetBool("Dead", true);
-
             Killable = false;
         }
+    }
+
+    private void Kill()
+    {
+        ParticleSys.Play();
+        var animator = GetComponent<Animator>();
+        animator.SetBool("Dead", true);
     }
 }
