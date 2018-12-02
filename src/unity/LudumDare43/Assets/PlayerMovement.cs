@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private bool sleighIsParent = false;
     private bool playerDead = false;
     private Animator playerAnimator;
+    private SpriteRenderer info;
 
     // Use this for initialization
     void Start()
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
         playerWalkingAnimations = GetComponent<HuskyTestScript>();
         playerAnimator = GetComponent<Animator>();
+        info = sleighTransform.Find("info").gameObject.GetComponent<SpriteRenderer>();
 
         sleighController.IsEnabled = true;
     }
@@ -81,12 +83,14 @@ public class PlayerMovement : MonoBehaviour
         {
             playerTransform.parent = sleighTransform;
             sleighIsParent = true;
+            info.enabled = true;
         }
         else if (isOnFloor && !isOnSleight)
         {
             playerTransform.parent = gameTransform;
             sleighIsParent = false;
             sleighTargetVelocity = 0;
+            info.enabled = false;
         }
 
         if (sleighIsParent && GetKeyDown(interactionKey))
