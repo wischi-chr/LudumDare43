@@ -10,6 +10,7 @@ public class IntroHandlerScript : MonoBehaviour
     public GameObject Sleigh;
     public GameObject HUD;
     public GameObject SleighClickInfo;
+    public GameObject Player;
 
     RectTransform mainMenuTransform;
     RectTransform logoTransform;
@@ -86,8 +87,6 @@ public class IntroHandlerScript : MonoBehaviour
 
     void SetHuskeySpeed(float speed)
     {
-        Debug.Log("Speed: " + speed);
-
         foreach (var ani in huskyAnimators)
         {
             var abs = Mathf.Abs(speed);
@@ -255,6 +254,9 @@ public class IntroHandlerScript : MonoBehaviour
                 //transition to normal game-mode
                 Debug.Log("Switch to game mode " + passedTime);
 
+                int offset = 20;
+                Player.SetActive(true);
+                Player.transform.position = new Vector3(Sleigh.transform.position.x + offset, Player.transform.position.y, Player.transform.position.z);
             }
         }
     }
