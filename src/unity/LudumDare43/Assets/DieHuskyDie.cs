@@ -7,15 +7,18 @@ public class DieHuskyDie : MonoBehaviour {
     public bool Killable = false;
     public ParticleSystem ParticleSys;
     public GameObject GameWorld;
+    public AudioClip whine;
 
     private Transform gameTransform;
     public bool Dead = false;
     private SpriteRenderer info;
-
+    private AudioSource audioSource;
+    
     // Use this for initialization
     void Start () {
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
         info = this.transform.Find("info").gameObject.GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -29,6 +32,7 @@ public class DieHuskyDie : MonoBehaviour {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
             info.enabled = true && !Dead;
+            audioSource.Play();
         }
         
     }
@@ -45,6 +49,9 @@ public class DieHuskyDie : MonoBehaviour {
 
     public void Kill()
     {
+        audioSource.clip = whine;
+        audioSource.Play();
+
         ParticleSys.Play();
         var animator = GetComponent<Animator>();
         animator.SetBool("Dead", true);
