@@ -14,7 +14,6 @@ public class DieHuskyDie : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(this.name + ": " + Killable);
 		if(Killable && Input.GetKeyDown(KeyCode.F))
         {
             Kill();
@@ -26,6 +25,7 @@ public class DieHuskyDie : MonoBehaviour {
         if (other.name == "Guy")
         {
             Killable = true;
+            Debug.Log(this.name + ": " + Killable);
         }
     }
 
@@ -34,6 +34,7 @@ public class DieHuskyDie : MonoBehaviour {
         if (other.name == "Guy")
         {
             Killable = false;
+            Debug.Log(this.name + ": " + Killable);
         }
     }
 
@@ -45,4 +46,6 @@ public class DieHuskyDie : MonoBehaviour {
 
         GlobalGameState.Food = 1f;
     }
+
+
 }

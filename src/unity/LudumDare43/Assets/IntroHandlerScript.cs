@@ -12,6 +12,7 @@ public class IntroHandlerScript : MonoBehaviour
     public GameObject HUD;
     public GameObject SleighClickInfo;
     public GameObject Player;
+    public GameObject MainCamera;
 
     RectTransform mainMenuTransform;
     RectTransform logoTransform;
@@ -261,6 +262,11 @@ public class IntroHandlerScript : MonoBehaviour
         if (passedTime >= EndIntro)
         {
             disableIntroScript = true;
+
+            // Camera movement to player
+            var script = MainCamera.GetComponent<CameraFollowObject>();
+            script.enabled = true;
+
             return;
         }
     }
