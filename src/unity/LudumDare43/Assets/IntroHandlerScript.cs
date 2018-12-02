@@ -98,8 +98,6 @@ public class IntroHandlerScript : MonoBehaviour
 
     void SetHuskeySpeed(float speed)
     {
-        Debug.Log("Speed: " + speed);
-
         foreach (var ani in huskyAnimators)
         {
             var abs = Mathf.Abs(speed);
