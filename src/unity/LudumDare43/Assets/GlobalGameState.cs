@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets
 {
@@ -18,6 +19,13 @@ namespace Assets
         public static float Distance
         {
             get { return (EndXPosition - StartXPosition) * distanceMultiplier; }
+        }
+
+        internal static void Reset()
+        {
+            Food = 1;
+            DogsAlive = 4;
+            KillIndex = 0;
         }
 
         public static float StartXPosition { get; set; }
