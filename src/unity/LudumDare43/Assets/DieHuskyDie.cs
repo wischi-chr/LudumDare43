@@ -36,7 +36,7 @@ public class DieHuskyDie : MonoBehaviour {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
         }
-        info.enabled = true;
+        info.enabled = true && !dead;
     }
 
     public void OnTriggerExit2D(Collider2D other)
