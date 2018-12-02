@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private CameraFollowObject cameraFollow;
     private Rigidbody2D compRigidBody;
     private Transform playerTransform;
     private Transform sleighTransform;
@@ -38,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        cameraFollow = Camera.main.GetComponent<CameraFollowObject>();
         compRigidBody = GetComponent<Rigidbody2D>();
         playerTransform = GetComponent<Transform>();
         sleighTransform = sleighController.GetComponent<Transform>();
@@ -84,6 +86,8 @@ public class PlayerMovement : MonoBehaviour
             playerTransform.parent = sleighTransform;
             sleighIsParent = true;
             info.enabled = true;
+            cameraFollow.playerScreenXmin = 0.2f;
+            cameraFollow.PlayerScreenXmax = 0.2f;
         }
         else if (isOnFloor && !isOnSleight)
         {
@@ -91,6 +95,8 @@ public class PlayerMovement : MonoBehaviour
             sleighIsParent = false;
             sleighTargetVelocity = 0;
             info.enabled = false;
+            cameraFollow.playerScreenXmin = 0.2f;
+            cameraFollow.PlayerScreenXmax = 0.8f;
         }
 
         if (sleighIsParent && GetKeyDown(interactionKey))

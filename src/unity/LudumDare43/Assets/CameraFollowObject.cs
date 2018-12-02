@@ -1,56 +1,89 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraFollowObject : MonoBehaviour
 {
-
     public GameObject ObjectToFollow;
-    public bool LockX, LockY;
-    public bool DebugInformation = true;
-    public Vector3 DestinationDifference = Vector3.zero;
-    public float Offset = 2f;
+
+    public float playerScreenXmin = 0.2f;
+    public float PlayerScreenXmax = 0.8f;
+
+    private Camera cam;
+    private float lastObjectXPos;
+
+    private float cameraXtarget;
 
     // Use this for initialization
     void Start()
     {
-
+        cam = GetComponent<Camera>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        var destination = new Vector3(LockX ? 0 : ObjectToFollow.transform.position.x, LockY ? 0 : ObjectToFollow.transform.position.y, transform.position.z);
-        destination += DestinationDifference;
-        float distance = Vector3.Distance(transform.position, destination);
+        var currentObjectX = ObjectToFollow.transform.position.x;
+        var objectVelocity = (currentObjectX - lastObjectXPos) / Time.deltaTime;
+        lastObjectXPos = currentObjectX;
 
-        if (distance > Offset)
+        var futurePosition = currentObjectX + objectVelocity * 1f;
+
+        Debug.Log("currentObjectX: " + currentObjectX);
+        Debug.Log("objectVelocity: " + objectVelocity);
+        Debug.Log("futurePosition: " + futurePosition);
+
+        var playerScreenX = GetViewPortX(futurePosition);
+
+        float diff = 0;
+
+        if (playerScreenX > PlayerScreenXmax)
         {
-
-            distance -= Offset;
-
-            var heading = destination - transform.position;
-            heading *= Time.deltaTime;
-            heading *= distance * 2;
-
-            transform.position = new Vector3(
-                LockX ? transform.position.x : transform.position.x + heading.x,
-                LockY ? transform.position.y : transform.position.y + heading.y,
-                transform.position.z);
+            diff = playerScreenX - PlayerScreenXmax;
         }
 
-        if (DebugInformation)
+        else if (playerScreenX < playerScreenXmin)
         {
-            DrawDebugInformation();
+            diff = playerScreenX - playerScreenXmin;
         }
+
+        
+
+        if (Mathf.Abs(diff) > 0)
+        {
+            cameraXtarget = GetWorldX(0.5f + diff);
+
+            //smooth camtarget
+
+            var camPos = cam.transform.position;
+
+            var distX = cameraXtarget - camPos.x;
+            var distAbs = Mathf.Abs(distX);
+
+            var speedX = distAbs;
+            speedX *= Mathf.Sign(distX);
+
+            var distanceInTick = speedX * Time.deltaTime;
+            camPos.x += distanceInTick;
+
+            cam.transform.position = camPos;
+        }
+    }
+
+    private float GetWorldX(float viewportX)
+    {
+        var point = new Vector3();
+        point.x = viewportX;
+        return cam.ViewportToWorldPoint(point).x;
+    }
+
+    private float GetViewPortX(float worldX)
+    {
+        var point = new Vector3();
+        point.x = worldX;
+        return cam.WorldToViewportPoint(point).x;
     }
 
     private void DrawDebugInformation()
     {
-        var position = new Vector3(transform.position.x, transform.position.y, 0);
-        var destination = new Vector3(LockX ? 0 : ObjectToFollow.transform.position.x, LockY ? 0 : ObjectToFollow.transform.position.y, 0);
-        destination += DestinationDifference;
 
-        Debug.DrawRay(position, destination - position, Color.black);
     }
 }

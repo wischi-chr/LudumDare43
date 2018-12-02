@@ -10,7 +10,7 @@ namespace Assets
         //Range: 0 (starved to dead) - 1 (full)
         public static float Food
         {
-            get { return food; }
+            get { return 1; }
             set { food = Mathf.Clamp(value, 0, 1); }
         }
 
