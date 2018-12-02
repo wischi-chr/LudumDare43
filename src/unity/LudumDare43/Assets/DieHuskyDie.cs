@@ -24,7 +24,7 @@ public class DieHuskyDie : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Guy")
+        if (other.name == "Guy" && this.name == GlobalGameState.NextKillName)
         {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
@@ -55,6 +55,7 @@ public class DieHuskyDie : MonoBehaviour {
 
         Dead = true;
         GlobalGameState.DogsAlive--;
+        GlobalGameState.KillIndex++;
     }
 
 

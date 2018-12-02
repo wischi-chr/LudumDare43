@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerTransform.parent = sleighTransform;
             sleighIsParent = true;
-            info.enabled = true;
+            info.enabled = GlobalGameState.DogsAlive > 0;            
         }
         else if (isOnFloor && !isOnSleight)
         {

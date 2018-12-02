@@ -22,9 +22,22 @@ namespace Assets
 
         public static float StartXPosition { get; set; }
         public static float EndXPosition { get; set; }
+        public static string NextKillName
+        {
+            get
+            {
+                if(KillIndex < KillOrder.Length)
+                {
+                    return KillOrder[KillIndex];
+                }
+                return string.Empty;
+            }
+        }
 
         public static int DogsAlive = 4;
 
         public static string[] DogNames = { "Happy", "Rudolph", "Pavlov", "Hachiko" };
+        public static int KillIndex = 0;
+        public static string[] KillOrder = { "Hachiko", "Pavlov", "Rudolph", "Happy" };
     }
 }
