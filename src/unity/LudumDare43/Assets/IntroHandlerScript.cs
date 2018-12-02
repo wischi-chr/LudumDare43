@@ -7,13 +7,15 @@ public class IntroHandlerScript : MonoBehaviour
     public GameObject MainMenu;
     public GameObject MainMenuLogo;
     public GameObject Sleigh;
+    public GameObject HUD;
     public GameObject SleighClickInfo;
 
     RectTransform mainMenuTransform;
     RectTransform logoTransform;
+    RectTransform hudTransform;
 
     Transform sleighTransform;
-    Vector3 sleighStartPosition;
+    Vector3 slPos;
 
     Camera locCamera;
     Vector3 cameraStartPosition;
@@ -24,10 +26,26 @@ public class IntroHandlerScript : MonoBehaviour
     Image helpPlayInfoImage;
 
     float passedTime = 0;
+    bool sleighButtonActivated = false;
+    float startGameTransition = 0f;
+    bool disableIntroScript = false;
+
+    readonly float hudHiddenY = -600;
+
+    //this is used to resetup the game
+    void SetupAllGameStates()
+    {
+        passedTime = 0;
+        startGameTransition = 0;
+        sleighButtonActivated = false;
+        disableIntroScript = false;
+    }
 
     // Use this for initialization
     void Start()
     {
+        SetupAllGameStates();
+
         locCamera = Camera.main;
         cameraStartPosition = locCamera.transform.position;
         helpPlayInfoImage = SleighClickInfo.GetComponent<Image>();
@@ -36,11 +54,12 @@ public class IntroHandlerScript : MonoBehaviour
 
         mainMenuTransform = MainMenu.GetComponent<RectTransform>();
         logoTransform = MainMenuLogo.GetComponent<RectTransform>();
+        hudTransform = HUD.GetComponent<RectTransform>();
         sleighTransform = Sleigh.GetComponent<Transform>();
 
-        sleighStartPosition = sleighTransform.localPosition;
-
-        SetupAllGameStates();
+        slPos = sleighTransform.localPosition;
+        helpPlayInfoImage.color = new Color(1, 1, 1, 0);
+        hudTransform.localPosition = new Vector3(0, hudHiddenY, 0);
     }
 
     void FindHuskies(GameObject sleigh)
@@ -66,13 +85,15 @@ public class IntroHandlerScript : MonoBehaviour
     {
         foreach (var ani in huskyAnimators)
         {
-            ani.SetFloat("Speed", Mathf.Abs(speed));
+            var abs = Mathf.Abs(speed);
+            ani.SetFloat("Speed", abs);
+            ani.speed = abs * 0.1f;
         }
     }
 
     // 0 = center
     // 1 = screen top
-    void SetMenuLogoPosition(float progress)
+    void SetMenuLogoPositionIntro(float progress)
     {
         if (progress < 0 || progress > 1)
             return;
@@ -90,19 +111,51 @@ public class IntroHandlerScript : MonoBehaviour
         logoTransform.localPosition = relPos;
     }
 
-    //this is used to resetup the game
-    void SetupAllGameStates()
+    void SetInfoIntro(float progress)
     {
+        if (progress < 0 || progress > 1)
+            return;
 
+        helpPlayInfoImage.color = new Color(1, 1, 1, progress);
+    }
+
+    void SetInfoOutro(float progress)
+    {
+        if (progress < 0 || progress > 1)
+            return;
+
+        helpPlayInfoImage.color = new Color(1, 1, 1, 1 - progress);
+    }
+
+    void SetMenuLogoPositionOutro(float progress)
+    {
+        if (progress < 0 || progress > 1)
+            return;
+
+        Vector3 relPos = new Vector3();
+        relPos.y = Mathf.Lerp(-100, 200, progress);
+
+        logoTransform.localPosition = relPos;
+    }
+
+    void ProgressHudIntro(float progress)
+    {
+        if (progress < 0 || progress > 1)
+            return;
+
+        Vector3 relPos = new Vector3();
+        relPos.y = Mathf.Lerp(hudHiddenY, 0, progress);
+
+        hudTransform.localPosition = relPos;
     }
 
     float TimeToProgress(float startTime, float endTime, EasingFunction.Function easingFunction)
     {
         if (passedTime < startTime)
-            return -1;
+            return -0.0001f;
 
         if (passedTime > endTime)
-            return 2f;
+            return 1.0001f;
 
         var timePassedSinceStart = passedTime - startTime;
         var animationDuration = endTime - startTime;
@@ -113,27 +166,91 @@ public class IntroHandlerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var sleighOffset = 6f;
-        var sleighSpeed = 10f;
+        if (disableIntroScript)
+            return;
 
         passedTime += Time.deltaTime;
 
-        var sleightPos = sleighStartPosition;
-        sleightPos.x += passedTime * sleighSpeed;
-        SetHuskeySpeed(1f);
+        var LogoMoveUpStart = 1f;
+        var LogoMoveUpEnd = 3f;
 
-        sleighTransform.localPosition = sleightPos;
+        var HelpBlendInStart = 4f;
+        var HelpBlendInEnd = 5f;
 
-        SetMenuLogoPosition(TimeToProgress(1, 3, EasingFunction.EaseOutBounce));
-        helpPlayInfoImage.color = new Color(1, 1, 1, TimeToProgress(4, 5, EasingFunction.Linear));
+        var sleighOffset = 6f;
+
+        // if sleigh was not pressed
+        // delay the transation ...
+        if (!sleighButtonActivated)
+        {
+            startGameTransition = passedTime + 0.1f;
+            if (startGameTransition < HelpBlendInEnd)
+                startGameTransition = HelpBlendInEnd;
+        }
+
+        var LogoMoveOutStart = startGameTransition + 0.5f;
+        var LogoMoveOutEnd = startGameTransition + 1.5f;
+
+        var HelpBlendOutStart = startGameTransition + 0.5f;
+        var HelpBlendOutEnd = startGameTransition + 1.5f;
+
+        var SleighSlowDownStart = startGameTransition + 0.5f;
+        var SleighSlowDownEnd = startGameTransition + 2f;
+
+        var HudIntroStart = startGameTransition + 1f;
+        var HudIntroEnd = HudIntroStart + 1f;
+
+        var EndIntro = startGameTransition + 2f;
+
+        if(passedTime >= EndIntro)
+        {
+            disableIntroScript = true;
+            return;
+        }
+
+        var sleighSpeed = (1 - TimeToProgress(SleighSlowDownStart, SleighSlowDownEnd, EasingFunction.Linear)) * 10f;
+
+        SetHuskeySpeed(sleighSpeed);
+        slPos.x += Time.deltaTime * sleighSpeed;
+        sleighTransform.localPosition = slPos;
+
+
+        SetMenuLogoPositionIntro(TimeToProgress(LogoMoveUpStart, LogoMoveUpEnd, EasingFunction.EaseOutBounce));
+        SetMenuLogoPositionOutro(TimeToProgress(LogoMoveOutStart, LogoMoveOutEnd, EasingFunction.EaseInQuad));
+
+        SetInfoIntro(TimeToProgress(HelpBlendInStart, HelpBlendInEnd, EasingFunction.Linear));
+        SetInfoOutro(TimeToProgress(HelpBlendOutStart, HelpBlendOutEnd, EasingFunction.Linear));
+
+        ProgressHudIntro(TimeToProgress(HudIntroStart, HudIntroEnd, EasingFunction.EaseOutCubic));
 
         var sleightPosXLimit = cameraStartPosition.x - sleighOffset;
 
-        if (sleightPos.x >= sleightPosXLimit)
+        if (slPos.x >= sleightPosXLimit)
         {
             var camPos = cameraStartPosition;
-            camPos.x = sleightPos.x + sleighOffset;
+            camPos.x = slPos.x + sleighOffset;
             locCamera.transform.position = camPos;
+        }
+
+
+        var sleighScreenPos = locCamera.WorldToViewportPoint(sleighTransform.position);
+        helpPlayInfoImage.rectTransform.position = locCamera.ViewportToScreenPoint(new Vector3(sleighScreenPos.x - 0.05f, sleighScreenPos.y + 0.15f, 0));
+
+        if (Input.GetMouseButtonDown(0) && !sleighButtonActivated && passedTime >= HelpBlendInStart)
+        {
+            var mousePos = locCamera.ScreenToViewportPoint(Input.mousePosition);
+            var sleighWithoutZ = sleighScreenPos;
+            sleighWithoutZ.z = 0;
+            var distSleigh = Vector3.Distance(sleighWithoutZ, mousePos);
+
+            if (distSleigh <= 0.1)
+            {
+                sleighButtonActivated = true;
+
+                //transition to normal game-mode
+                Debug.Log("Switch to game mode " + passedTime);
+
+            }
         }
     }
 }
