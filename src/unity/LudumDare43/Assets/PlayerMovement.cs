@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumping = false;
     private Vector2 lookDirection = Vector2.right;
     private bool sleighIsParent = false;
+    private Animator playerAnimator;
 
     // Use this for initialization
     void Start()
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         playerTransform = GetComponent<Transform>();
         sleighTransform = sleighController.GetComponent<Transform>();
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
+        playerAnimator = GetComponent<Animator>();
 
         sleighController.IsEnabled = true;
     }
@@ -45,6 +47,11 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         GlobalGameState.EndXPosition = transform.position.x;
+
+        if(GlobalGameState.Food <= 0)
+        {
+            playerAnimator.SetBool("Dead", true);
+        }
 
         float sprint = 1;
 
@@ -83,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
         if (sleighTargetVelocity < 0)
             sleighTargetVelocity = 0;
 
-        sleighController.acceleration = GlobalGameState.DogsAlive / 3.0f;
         sleighController.targetVelocity = sleighTargetVelocity;
 
         if (compRigidBody.velocity.y > 0.01f)
