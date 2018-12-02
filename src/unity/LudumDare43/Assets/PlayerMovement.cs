@@ -83,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
         if (sleighTargetVelocity < 0)
             sleighTargetVelocity = 0;
 
+        sleighController.acceleration = GlobalGameState.DogsAlive / 3.0f;
         sleighController.targetVelocity = sleighTargetVelocity;
 
         if (compRigidBody.velocity.y > 0.01f)
