@@ -5,7 +5,7 @@ namespace Assets
     public static class GlobalGameState
     {
         private static float food;
-        private static int distanceMultiplier = 10;
+        private static int distanceMultiplier = 1;
 
         //Range: 0 (starved to dead) - 1 (full)
         public static float Food
