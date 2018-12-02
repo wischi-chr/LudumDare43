@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 27092696}
   - component: {fileID: 27092695}
   - component: {fileID: 27092698}
+  - component: {fileID: 27092699}
   m_Layer: 9
   m_Name: sleigh
   m_TagString: Untagged
@@ -182,7 +183,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 27092693}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -259,6 +260,21 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &27092699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 27092693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abe6821b9b48454b9889bfb159a539c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetVelocity: 0
+  velocityFriction: 0.9
+  holdSpeed: 0
+  IsEnabled: 0
 --- !u!1 &27244272
 GameObject:
   m_ObjectHideFlags: 0
@@ -10462,8 +10478,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IdleHungerPointsPerSecond: 0.01
-  VelocityXPointFactor: 0.01
-  VelocityYPointFactor: 0.01
+  VelocityXPointFactor: 0.002
+  VelocityYPointFactor: 0.001
 --- !u!1 &1155361469
 GameObject:
   m_ObjectHideFlags: 0
@@ -20946,6 +20962,11 @@ Prefab:
       propertyPath: m_GravityScale
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114940502337465470, guid: b40dbe1324794ad4ca1efca1840c5bb2,
+        type: 2}
+      propertyPath: sleighController
+      value: 
+      objectReference: {fileID: 27092699}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b40dbe1324794ad4ca1efca1840c5bb2, type: 2}
   m_IsPrefabAsset: 0

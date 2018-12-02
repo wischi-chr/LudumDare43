@@ -4,11 +4,16 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D compRigidBody;
+    private Transform playerTransform;
+    private Transform sleighTransform;
+    private Transform gameTransform;
 
     private float distToGround;
 
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
+    public KeyCode interactionKey = KeyCode.F;
+
     public float movementSpeed = 100f;
     private float sprintMultiplyer = 2;
     public float JumpHeight = 1f;
@@ -18,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpRayCast = 0.75f;
 
     public LayerMask GroundLayer;
-
+    public SleighMovementController sleighController;
 
     private bool jumping = false;
     private Vector2 lookDirection = Vector2.right;
@@ -27,6 +32,11 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         compRigidBody = GetComponent<Rigidbody2D>();
+        playerTransform = GetComponent<Transform>();
+        sleighTransform = sleighController.GetComponent<Transform>();
+        gameTransform = GameObject.Find("Game").GetComponent<Transform>();
+
+        sleighController.IsEnabled = true;
     }
 
     // Update is called once per frame
@@ -44,12 +54,26 @@ public class PlayerMovement : MonoBehaviour
         lookDirection = x > 0 ? Vector2.right : Vector2.left;
 
 
-        
+
         var isJumpKeyDown = Input.GetKeyDown(jumpKey) || Input.GetAxis("Vertical") > float.Epsilon;
 
         var isOnSleight = IsOnElement("sleigh");
         var isOnFloor = IsOnElement("floor");
         var grounded = isOnSleight || isOnFloor;
+
+        if (isOnSleight && !isOnFloor)
+        {
+            playerTransform.parent = sleighTransform;
+        }
+        else if (isOnFloor && !isOnSleight)
+        {
+            playerTransform.parent = gameTransform;
+        }
+
+        if (isOnSleight && Input.GetKey(interactionKey))
+        {
+            sleighController.targetVelocity = 10f;
+        }
 
         if (compRigidBody.velocity.y > 0.01f)
             isJumpKeyDown = false;
