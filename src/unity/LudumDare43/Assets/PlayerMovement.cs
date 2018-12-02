@@ -123,8 +123,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (GetKeyDown(interactionKey))
         {
-            Debug.Log("diescript" + dieList.Count());
-
             var dieScript = dieList.FirstOrDefault(d => d.Killable && !d.Dead);
 
             if (dieScript != null)

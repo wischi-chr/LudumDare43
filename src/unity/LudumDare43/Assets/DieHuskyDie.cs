@@ -1,9 +1,8 @@
 ﻿using Assets;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DieHuskyDie : MonoBehaviour {
+public class DieHuskyDie : MonoBehaviour
+{
     public bool Killable = false;
     public ParticleSystem ParticleSys;
     public GameObject GameWorld;
@@ -13,18 +12,20 @@ public class DieHuskyDie : MonoBehaviour {
     public bool Dead = false;
     private SpriteRenderer info;
     private AudioSource audioSource;
-    
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
         info = this.transform.Find("info").gameObject.GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        Debug.Log(Dead);
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -35,7 +36,7 @@ public class DieHuskyDie : MonoBehaviour {
             info.enabled = true && !Dead;
             audioSource.Play();
         }
-        
+
     }
 
     public void OnTriggerExit2D(Collider2D other)

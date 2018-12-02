@@ -30,8 +30,6 @@ public class CameraFollowObject : MonoBehaviour
         var objVel = (currentObjectX - lastObjPos) / Time.deltaTime;
         lastObjPos = currentObjectX;
 
-        Debug.Log("currentObjectX: " + currentObjectX);
-
         var playerScreenX = GetViewPortX(currentObjectX);
 
         float diff = 0;
