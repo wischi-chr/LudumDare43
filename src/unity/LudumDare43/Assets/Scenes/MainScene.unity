@@ -20888,7 +20888,7 @@ Prefab:
     - target: {fileID: 114940502337465470, guid: b40dbe1324794ad4ca1efca1840c5bb2,
         type: 2}
       propertyPath: jumpKey
-      value: 273
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 61866089827506526, guid: b40dbe1324794ad4ca1efca1840c5bb2,
         type: 2}
@@ -20911,7 +20911,7 @@ Prefab:
     - target: {fileID: 114940502337465470, guid: b40dbe1324794ad4ca1efca1840c5bb2,
         type: 2}
       propertyPath: JumpHeight
-      value: 1400
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114940502337465470, guid: b40dbe1324794ad4ca1efca1840c5bb2,
         type: 2}
@@ -20926,6 +20926,11 @@ Prefab:
         type: 2}
       propertyPath: m_Mass
       value: 2.6785238
+      objectReference: {fileID: 0}
+    - target: {fileID: 50846276290194674, guid: b40dbe1324794ad4ca1efca1840c5bb2,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b40dbe1324794ad4ca1efca1840c5bb2, type: 2}

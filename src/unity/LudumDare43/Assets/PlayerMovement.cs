@@ -1,19 +1,17 @@
 ﻿using Assets;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     private Rigidbody2D compRigidBody;
+
     private float distToGround;
 
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
     public float movementSpeed = 100f;
     private float sprintMultiplyer = 2;
-    public float JumpHeight = 250;
+    public float JumpHeight = 1f;
     public bool DebugInformation = true;
     public int PossibleJumps = 1;
     public int ExecutedJumps = 0;
@@ -46,29 +44,26 @@ public class PlayerMovement : MonoBehaviour
         lookDirection = x > 0 ? Vector2.right : Vector2.left;
 
 
-        var grounded = IsGrounded();
+        
+        var isJumpKeyDown = Input.GetKeyDown(jumpKey) || Input.GetAxis("Vertical") > float.Epsilon;
 
-        if (Input.GetKeyDown(jumpKey) && grounded && !jumping)
-        {
-            Jump();
-            jumping = true;
-            ExecutedJumps = 1;
-        }
-        else if (!jumping && Input.GetKeyDown(jumpKey) && ExecutedJumps < PossibleJumps)
-        {
-            Jump();
-            ExecutedJumps++;
-        }
+        var isOnSleight = IsOnElement("sleigh");
+        var isOnFloor = IsOnElement("floor");
+        var grounded = isOnSleight || isOnFloor;
 
-        if (!Input.GetKey(jumpKey))
-        {
-            jumping = false;
-        }
+        Debug.Log(isOnSleight + ", " + isOnFloor);
 
-        //velocity method
-        var vel = (transform.right * x) * movementSpeed;
-        vel.y = compRigidBody.velocity.y;
-        compRigidBody.velocity = vel;
+        if (compRigidBody.velocity.y > 0.01f)
+            isJumpKeyDown = false;
+
+        var targetYVel = compRigidBody.velocity.y;
+
+        if (isJumpKeyDown && grounded)
+            targetYVel = JumpHeight;
+
+        targetYVel = Mathf.Min(targetYVel, JumpHeight);
+
+        compRigidBody.velocity = new Vector2(x * movementSpeed, targetYVel);
 
         Vector3 forward = transform.TransformDirection(Vector3.forward) * 10;
 
@@ -78,16 +73,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Jump()
+    private bool IsOnElement(string name)
     {
-        compRigidBody.AddForce(Vector2.up * JumpHeight);
-    }
+        var colliders = new Collider2D[5];
+        var len = compRigidBody.GetContacts(colliders);
 
-    private bool IsGrounded()
-    {
-        return Physics2D.Raycast(transform.position, Vector2.down, JumpRayCast, GroundLayer).collider != null
-            || Physics2D.Raycast(transform.position - new Vector3(0.5f, 0, 0), Vector2.down, JumpRayCast, GroundLayer).collider != null
-            || Physics2D.Raycast(transform.position + new Vector3(0.5f, 0, 0), Vector2.down, JumpRayCast, GroundLayer).collider != null;
+        for (int i = 0; i < len; i++)
+        {
+            if (colliders[i].GetComponent<BoxCollider2D>().name == name)
+                return true;
+        }
+
+        return false;
     }
 
     private void DrawDebugInformation()
