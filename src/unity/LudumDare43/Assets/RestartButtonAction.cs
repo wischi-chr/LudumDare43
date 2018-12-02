@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,5 +19,6 @@ public class RestartButtonAction : MonoBehaviour {
     public void ResetButtonAction()
     {
         SceneManager.LoadScene("MainScene");
+        GlobalGameState.Reset();
     }
 }
