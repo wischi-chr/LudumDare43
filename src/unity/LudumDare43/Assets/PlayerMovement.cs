@@ -25,8 +25,10 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask GroundLayer;
     public SleighMovementController sleighController;
 
+    public float sleighTargetVelocity = 0f;
     private bool jumping = false;
     private Vector2 lookDirection = Vector2.right;
+    private bool sleighIsParent = false;
 
     // Use this for initialization
     void Start()
@@ -53,8 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
         lookDirection = x > 0 ? Vector2.right : Vector2.left;
 
-
-
         var isJumpKeyDown = Input.GetKeyDown(jumpKey) || Input.GetAxis("Vertical") > float.Epsilon;
 
         var isOnSleight = IsOnElement("sleigh");
@@ -64,20 +64,26 @@ public class PlayerMovement : MonoBehaviour
         if (isOnSleight && !isOnFloor)
         {
             playerTransform.parent = sleighTransform;
+            sleighIsParent = true;
         }
         else if (isOnFloor && !isOnSleight)
         {
             playerTransform.parent = gameTransform;
+            sleighIsParent = false;
+            sleighTargetVelocity = 0;
         }
 
-        if (isOnSleight && Input.GetKey(interactionKey))
+        if (sleighIsParent && Input.GetKeyDown(interactionKey))
         {
-            sleighController.targetVelocity = 30f;
+            sleighTargetVelocity += 0.3f;
         }
-        else
-        {
-            sleighController.targetVelocity = 0f;
-        }
+
+        sleighTargetVelocity -= sleighTargetVelocity * 0.1f * Time.deltaTime;
+
+        if (sleighTargetVelocity < 0)
+            sleighTargetVelocity = 0;
+
+        sleighController.targetVelocity = sleighTargetVelocity;
 
         if (compRigidBody.velocity.y > 0.01f)
             isJumpKeyDown = false;

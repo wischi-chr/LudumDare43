@@ -272,8 +272,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetVelocity: 0
-  velocityFriction: 0.9
-  holdSpeed: 0
+  velocity: 0
+  acceleration: 3
+  deceleration: 10
   IsEnabled: 0
 --- !u!1 &27244272
 GameObject:

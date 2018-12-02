@@ -30,6 +30,9 @@ public class SleighMovementController : MonoBehaviour
         if (!IsEnabled)
             return;
 
+        if (targetVelocity < 0)
+            targetVelocity = 0;
+
         UpdateVelocity();
     }
 
