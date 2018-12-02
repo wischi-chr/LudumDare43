@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,13 @@ public class IntroHandlerScript : MonoBehaviour
     bool sleighButtonActivated = false;
     float startGameTransition = 0f;
     bool disableIntroScript = false;
+    TransitionState transitionState;
+
+    private enum TransitionState
+    {
+        IntroStart,
+        IntroEnding,
+    }
 
     readonly float hudHiddenY = -600;
 
@@ -38,10 +46,14 @@ public class IntroHandlerScript : MonoBehaviour
     //this is used to resetup the game
     void SetupAllGameStates()
     {
+        transitionState = TransitionState.IntroStart;
         passedTime = 0;
         startGameTransition = 0;
         sleighButtonActivated = false;
         disableIntroScript = false;
+
+        GlobalGameState.Food = 1;
+        GlobalGameState.Distance = 0;
     }
 
     // Use this for initialization
@@ -100,9 +112,6 @@ public class IntroHandlerScript : MonoBehaviour
     // 1 = screen top
     void SetMenuLogoPositionIntro(float progress)
     {
-        if (progress < 0 || progress > 1)
-            return;
-
         Vector2 ancorPos = new Vector2();
         ancorPos.x = 0.5f;
         ancorPos.y = Mathf.Lerp(0.5f, 1, progress);
@@ -118,25 +127,16 @@ public class IntroHandlerScript : MonoBehaviour
 
     void SetInfoIntro(float progress)
     {
-        if (progress < 0 || progress > 1)
-            return;
-
         helpPlayInfoImage.color = new Color(1, 1, 1, progress);
     }
 
     void SetInfoOutro(float progress)
     {
-        if (progress < 0 || progress > 1)
-            return;
-
         helpPlayInfoImage.color = new Color(1, 1, 1, 1 - progress);
     }
 
     void SetMenuLogoPositionOutro(float progress)
     {
-        if (progress < 0 || progress > 1)
-            return;
-
         Vector3 relPos = new Vector3();
         relPos.y = Mathf.Lerp(-100, 200, progress);
 
@@ -145,9 +145,6 @@ public class IntroHandlerScript : MonoBehaviour
 
     void ProgressHudIntro(float progress)
     {
-        if (progress < 0 || progress > 1)
-            return;
-
         Vector3 relPos = new Vector3();
         relPos.y = Mathf.Lerp(hudHiddenY, 0, progress);
 
@@ -157,10 +154,10 @@ public class IntroHandlerScript : MonoBehaviour
     float TimeToProgress(float startTime, float endTime, EasingFunction.Function easingFunction)
     {
         if (passedTime < startTime)
-            return -0.0001f;
+            return 0f;
 
         if (passedTime > endTime)
-            return 1.0001f;
+            return 1f;
 
         var timePassedSinceStart = passedTime - startTime;
         var animationDuration = endTime - startTime;
@@ -207,26 +204,24 @@ public class IntroHandlerScript : MonoBehaviour
 
         var EndIntro = startGameTransition + 2f;
 
-        if(passedTime >= EndIntro)
+        switch (transitionState)
         {
-            disableIntroScript = true;
-            return;
+            case TransitionState.IntroStart:
+                SetMenuLogoPositionIntro(TimeToProgress(LogoMoveUpStart, LogoMoveUpEnd, EasingFunction.EaseOutBounce));
+                SetInfoIntro(TimeToProgress(HelpBlendInStart, HelpBlendInEnd, EasingFunction.Linear));
+                break;
+
+            case TransitionState.IntroEnding:
+                SetMenuLogoPositionOutro(TimeToProgress(LogoMoveOutStart, LogoMoveOutEnd, EasingFunction.EaseInQuad));
+                SetInfoOutro(TimeToProgress(HelpBlendOutStart, HelpBlendOutEnd, EasingFunction.Linear));
+                ProgressHudIntro(TimeToProgress(HudIntroStart, HudIntroEnd, EasingFunction.EaseOutCubic));
+                break;
         }
 
         var sleighSpeed = (1 - TimeToProgress(SleighSlowDownStart, SleighSlowDownEnd, EasingFunction.Linear)) * 10f;
-
         SetHuskeySpeed(sleighSpeed);
         slPos.x += Time.deltaTime * sleighSpeed;
         sleighTransform.localPosition = slPos;
-
-
-        SetMenuLogoPositionIntro(TimeToProgress(LogoMoveUpStart, LogoMoveUpEnd, EasingFunction.EaseOutBounce));
-        SetMenuLogoPositionOutro(TimeToProgress(LogoMoveOutStart, LogoMoveOutEnd, EasingFunction.EaseInQuad));
-
-        SetInfoIntro(TimeToProgress(HelpBlendInStart, HelpBlendInEnd, EasingFunction.Linear));
-        SetInfoOutro(TimeToProgress(HelpBlendOutStart, HelpBlendOutEnd, EasingFunction.Linear));
-
-        ProgressHudIntro(TimeToProgress(HudIntroStart, HudIntroEnd, EasingFunction.EaseOutCubic));
 
         var sleightPosXLimit = cameraStartPosition.x - sleighOffset;
 
@@ -236,7 +231,6 @@ public class IntroHandlerScript : MonoBehaviour
             camPos.x = slPos.x + sleighOffset;
             locCamera.transform.position = camPos;
         }
-
 
         var sleighScreenPos = locCamera.WorldToViewportPoint(sleighTransform.position);
         helpPlayInfoImage.rectTransform.position = locCamera.ViewportToScreenPoint(new Vector3(sleighScreenPos.x - 0.05f, sleighScreenPos.y + 0.15f, 0));
@@ -251,11 +245,18 @@ public class IntroHandlerScript : MonoBehaviour
             if (distSleigh <= 0.1)
             {
                 sleighButtonActivated = true;
+                transitionState = TransitionState.IntroEnding;
 
                 //transition to normal game-mode
                 Debug.Log("Switch to game mode " + passedTime);
 
             }
+        }
+
+        if (passedTime >= EndIntro)
+        {
+            disableIntroScript = true;
+            return;
         }
     }
 }
