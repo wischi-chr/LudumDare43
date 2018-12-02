@@ -8,9 +8,10 @@ public class CameraFollowObject : MonoBehaviour
     public float PlayerScreenXmax = 0.8f;
 
     private Camera cam;
-    private float lastObjectXPos;
 
     private float cameraXtarget;
+    private float cameraSpeedX;
+    private float lastObjPos = float.NaN;
 
     // Use this for initialization
     void Start()
@@ -22,16 +23,16 @@ public class CameraFollowObject : MonoBehaviour
     void Update()
     {
         var currentObjectX = ObjectToFollow.transform.position.x;
-        var objectVelocity = (currentObjectX - lastObjectXPos) / Time.deltaTime;
-        lastObjectXPos = currentObjectX;
 
-        var futurePosition = currentObjectX + objectVelocity * 1f;
+        if (float.IsNaN(lastObjPos))
+            lastObjPos = currentObjectX;
+
+        var objVel = (currentObjectX - lastObjPos) / Time.deltaTime;
+        lastObjPos = currentObjectX;
 
         Debug.Log("currentObjectX: " + currentObjectX);
-        Debug.Log("objectVelocity: " + objectVelocity);
-        Debug.Log("futurePosition: " + futurePosition);
 
-        var playerScreenX = GetViewPortX(futurePosition);
+        var playerScreenX = GetViewPortX(currentObjectX);
 
         float diff = 0;
 
@@ -45,25 +46,15 @@ public class CameraFollowObject : MonoBehaviour
             diff = playerScreenX - playerScreenXmin;
         }
 
-        
-
-        if (Mathf.Abs(diff) > 0)
+        var diffAbs = Mathf.Abs(diff);
+        if (diffAbs > 0)
         {
             cameraXtarget = GetWorldX(0.5f + diff);
 
-            //smooth camtarget
+            var time = 1.0f / diffAbs * 0.01f;
 
             var camPos = cam.transform.position;
-
-            var distX = cameraXtarget - camPos.x;
-            var distAbs = Mathf.Abs(distX);
-
-            var speedX = distAbs;
-            speedX *= Mathf.Sign(distX);
-
-            var distanceInTick = speedX * Time.deltaTime;
-            camPos.x += distanceInTick;
-
+            camPos.x = Mathf.SmoothDamp(camPos.x, cameraXtarget, ref cameraSpeedX, time, Mathf.Abs(objVel) + 10f);
             cam.transform.position = camPos;
         }
     }

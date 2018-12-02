@@ -15878,11 +15878,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectToFollow: {fileID: 1138364741}
-  LockX: 0
-  LockY: 1
-  DebugInformation: 1
-  DestinationDifference: {x: 0, y: 0, z: 0}
-  Offset: 2
+  playerScreenXmin: 0.2
+  PlayerScreenXmax: 0.8
 --- !u!1 &1281583530
 GameObject:
   m_ObjectHideFlags: 0
@@ -21413,6 +21410,21 @@ Prefab:
       propertyPath: RestartButton
       value: 
       objectReference: {fileID: 798612000}
+    - target: {fileID: 50846276290194674, guid: b40dbe1324794ad4ca1efca1840c5bb2,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 61866089827506526, guid: b40dbe1324794ad4ca1efca1840c5bb2,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 50846276290194674, guid: b40dbe1324794ad4ca1efca1840c5bb2,
+        type: 2}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b40dbe1324794ad4ca1efca1840c5bb2, type: 2}
   m_IsPrefabAsset: 0
