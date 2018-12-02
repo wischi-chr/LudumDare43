@@ -54,7 +54,8 @@ public class IntroHandlerScript : MonoBehaviour
         disableIntroScript = false;
 
         GlobalGameState.Food = 1;
-        GlobalGameState.Distance = 0;
+        GlobalGameState.StartXPosition = 0;
+        GlobalGameState.EndXPosition = 0;
     }
 
     // Use this for initialization
@@ -252,6 +253,8 @@ public class IntroHandlerScript : MonoBehaviour
                 int offset = 20;
                 Player.SetActive(true);
                 Player.transform.position = new Vector3(Sleigh.transform.position.x + offset, Player.transform.position.y, Player.transform.position.z);
+
+                GlobalGameState.StartXPosition = Player.transform.position.x;
             }
         }
 
