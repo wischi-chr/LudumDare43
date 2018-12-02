@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 lookDirection = Vector2.right;
     private bool sleighIsParent = false;
     private bool playerDead = false;
+    private Animator playerAnimator;
 
     // Use this for initialization
     void Start()
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         sleighTransform = sleighController.GetComponent<Transform>();
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
         playerWalkingAnimations = GetComponent<HuskyTestScript>();
+        playerAnimator = GetComponent<Animator>();
 
         sleighController.IsEnabled = true;
     }
@@ -52,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
             //STARVED TO DEATH
             playerDead = true;
             sleighTargetVelocity = 0f;
+            playerAnimator.SetBool("Dead", true);
         }
 
         if (!playerDead)
