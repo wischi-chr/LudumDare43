@@ -50,6 +50,8 @@ public class SleighMovementController : MonoBehaviour
         var locPos = sleighTransform.localPosition;
         locPos.x += targetVelocity * Time.deltaTime;
         sleighTransform.localPosition = locPos;
+
+        SetHuskeySpeed(targetVelocity);
     }
 
     void SetHuskeySpeed(float speed)
