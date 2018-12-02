@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float distToGround;
 
+    public GameObject RestartButton;
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
     public KeyCode interactionKey = KeyCode.F;
@@ -55,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
             playerDead = true;
             sleighTargetVelocity = 0f;
             playerAnimator.SetBool("Dead", true);
+            RestartButton.SetActive(true);
         }
 
         if (!playerDead)

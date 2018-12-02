@@ -64,11 +64,12 @@ public class SleighMovementController : MonoBehaviour
         {
             var abs = Mathf.Abs(speed);
             ani.SetFloat("Speed", abs);
-            Debug.Log("Set Speed: " + abs);
+            
             if(speed > 0)
             {
                 ani.speed = abs * 0.5f;
             }
+
             ani.speed = 1;
         }
     }
