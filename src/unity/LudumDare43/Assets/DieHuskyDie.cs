@@ -6,17 +6,24 @@ using UnityEngine;
 public class DieHuskyDie : MonoBehaviour {
     public bool Killable = false;
     public ParticleSystem ParticleSys;
+    public GameObject GameWorld;
+
+    private Transform gameTransform;
+    private bool dead = false;
 
     // Use this for initialization
     void Start () {
-		
-	}
+        gameTransform = GameObject.Find("Game").GetComponent<Transform>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		if(Killable && Input.GetKeyDown(KeyCode.F))
+		if(!dead && Killable && Input.GetKeyDown(KeyCode.F))
         {
             Kill();
+            dead = true;
+            GlobalGameState.DogsAlive--;
+
         }
 	}
 
@@ -45,6 +52,8 @@ public class DieHuskyDie : MonoBehaviour {
         animator.SetBool("Dead", true);
 
         GlobalGameState.Food = 1f;
+
+        this.transform.parent = gameTransform;
     }
 
 

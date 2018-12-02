@@ -22,5 +22,7 @@ namespace Assets
 
         public static float StartXPosition { get; set; }
         public static float EndXPosition { get; set; }
+
+        public static int DogsAlive = 4;
     }
 }
