@@ -15467,7 +15467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Depth: 27
-  Speed: 0.4
+  Speed: 1
   Offset: 0
   Scale: 1
   Sprite: {fileID: 21300000, guid: 47d9871f220fcc1419c785397b88dc27, type: 3}
