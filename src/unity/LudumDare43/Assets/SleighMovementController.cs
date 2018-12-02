@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,6 @@ public class SleighMovementController : MonoBehaviour
     Transform sleighTransform;
     List<GameObject> huskies;
     List<Animator> huskyAnimators;
-
-    string[] dogNames = { "Happy", "Rudolph", "Pavlov", "Hachiko" };
 
     // Use this for initialization
     void Start()
@@ -82,7 +81,7 @@ public class SleighMovementController : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (Array.IndexOf(dogNames, child.gameObject.name) > -1)
+            if (Array.IndexOf(GlobalGameState.DogNames, child.gameObject.name) > -1)
             {
                 huskies.Add(child.gameObject);
                 huskyAnimators.Add(child.gameObject.GetComponent<Animator>());

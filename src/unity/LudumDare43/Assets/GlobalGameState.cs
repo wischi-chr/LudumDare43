@@ -24,5 +24,7 @@ namespace Assets
         public static float EndXPosition { get; set; }
 
         public static int DogsAlive = 4;
+
+        public static string[] DogNames = { "Happy", "Rudolph", "Pavlov", "Hachiko" };
     }
 }

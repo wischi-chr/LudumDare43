@@ -9,7 +9,7 @@ public class DieHuskyDie : MonoBehaviour {
     public GameObject GameWorld;
 
     private Transform gameTransform;
-    private bool dead = false;
+    public bool Dead = false;
     private SpriteRenderer info;
 
     // Use this for initialization
@@ -20,13 +20,6 @@ public class DieHuskyDie : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!dead && Killable && Input.GetKeyDown(KeyCode.F))
-        {
-            Kill();
-            dead = true;
-            GlobalGameState.DogsAlive--;
-
-        }
 	}
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -35,8 +28,9 @@ public class DieHuskyDie : MonoBehaviour {
         {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
+            info.enabled = true && !Dead;
         }
-        info.enabled = true && !dead;
+        
     }
 
     public void OnTriggerExit2D(Collider2D other)
@@ -45,12 +39,11 @@ public class DieHuskyDie : MonoBehaviour {
         {
             Killable = false;
             Debug.Log(this.name + ": " + Killable);
+            info.enabled = false;
         }
-
-        info.enabled = false;
     }
 
-    private void Kill()
+    public void Kill()
     {
         ParticleSys.Play();
         var animator = GetComponent<Animator>();
@@ -59,6 +52,9 @@ public class DieHuskyDie : MonoBehaviour {
         GlobalGameState.Food = 1f;
 
         this.transform.parent = gameTransform;
+
+        Dead = true;
+        GlobalGameState.DogsAlive--;
     }
 
 

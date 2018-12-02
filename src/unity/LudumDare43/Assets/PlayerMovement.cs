@@ -1,4 +1,7 @@
 ﻿using Assets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -34,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private bool playerDead = false;
     private Animator playerAnimator;
     private SpriteRenderer info;
+    private List<DieHuskyDie> dieList = new List<DieHuskyDie>();
 
     // Use this for initialization
     void Start()
@@ -47,6 +51,24 @@ public class PlayerMovement : MonoBehaviour
         info = sleighTransform.Find("info").gameObject.GetComponent<SpriteRenderer>();
 
         sleighController.IsEnabled = true;
+
+        FindHuskies();
+    }
+
+    void FindHuskies()
+    {
+        var cnt = 0;
+
+        foreach (Transform child in sleighTransform)
+        {
+            if (Array.IndexOf(GlobalGameState.DogNames, child.gameObject.name) > -1)
+            {
+                dieList.Add(child.gameObject.GetComponent<DieHuskyDie>());
+                cnt++;
+            }
+        }
+
+        Debug.Log("Huskies found: " + cnt);
     }
 
     // Update is called once per frame
@@ -91,6 +113,16 @@ public class PlayerMovement : MonoBehaviour
             sleighIsParent = false;
             sleighTargetVelocity = 0;
             info.enabled = false;
+        }
+
+        if (GetKeyDown(interactionKey))
+        {
+            Debug.Log("diescript" + dieList.Count());
+            var dieScript = dieList.FirstOrDefault(d => d.Killable && !d.Dead);
+            if (dieScript != null)
+            {
+                dieScript.Kill();
+            }
         }
 
         if (sleighIsParent && GetKeyDown(interactionKey))
