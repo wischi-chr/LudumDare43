@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,8 @@ public class IntroHandlerScript : MonoBehaviour
     bool disableIntroScript = false;
 
     readonly float hudHiddenY = -600;
+
+    string[] dogNames = { "Happy", "Rudolph", "Pavlov", "Hachiko" };
 
     //this is used to resetup the game
     void SetupAllGameStates()
@@ -70,7 +73,7 @@ public class IntroHandlerScript : MonoBehaviour
 
         foreach (Transform child in Sleigh.transform)
         {
-            if (child.gameObject.name.StartsWith("Husky_"))
+            if (Array.IndexOf(dogNames, child.gameObject.name) > -1)
             {
                 huskies.Add(child.gameObject);
                 huskyAnimators.Add(child.gameObject.GetComponent<Animator>());
@@ -83,6 +86,8 @@ public class IntroHandlerScript : MonoBehaviour
 
     void SetHuskeySpeed(float speed)
     {
+        Debug.Log("Speed: " + speed);
+
         foreach (var ani in huskyAnimators)
         {
             var abs = Mathf.Abs(speed);
