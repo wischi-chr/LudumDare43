@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,5 +42,7 @@ public class DieHuskyDie : MonoBehaviour {
         ParticleSys.Play();
         var animator = GetComponent<Animator>();
         animator.SetBool("Dead", true);
+
+        GlobalGameState.Food = 1f;
     }
 }
