@@ -72,7 +72,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (isOnSleight && Input.GetKey(interactionKey))
         {
-            sleighController.targetVelocity = 10f;
+            sleighController.targetVelocity = 30f;
+        }
+        else
+        {
+            sleighController.targetVelocity = 0f;
         }
 
         if (compRigidBody.velocity.y > 0.01f)
