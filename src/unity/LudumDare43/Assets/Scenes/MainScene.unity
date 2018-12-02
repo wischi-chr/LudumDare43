@@ -10629,7 +10629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049c4f0d40aad7445824ef1aa53ad986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdleHungerPointsPerSecond: 0.01
+  IdleHungerPointsPerSecond: 0.1
   VelocityXPointFactor: 0.002
   VelocityYPointFactor: 0.001
 --- !u!1 &1155361469
