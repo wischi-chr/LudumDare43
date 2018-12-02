@@ -1,20 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class HuskyTestScript : MonoBehaviour {
+public class HuskyTestScript : MonoBehaviour
+{
     public int mutliSpeed = 40;
     public Animator animator;
     public SpriteRenderer SpriteRenderer;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        var speed = Input.GetAxisRaw("Horizontal") * mutliSpeed;
+    private Rigidbody2D playerRigid;
+
+    // Use this for initialization
+    void Start()
+    {
+        playerRigid = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        var speed = playerRigid.velocity.x;
 
         animator.SetFloat("Speed", Mathf.Abs(speed));
 
@@ -27,5 +30,5 @@ public class HuskyTestScript : MonoBehaviour {
         {
             SpriteRenderer.flipX = false;
         }
-	}
+    }
 }

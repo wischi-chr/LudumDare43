@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform playerTransform;
     private Transform sleighTransform;
     private Transform gameTransform;
+    private HuskyTestScript playerWalkingAnimations;
 
     private float distToGround;
 
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumping = false;
     private Vector2 lookDirection = Vector2.right;
     private bool sleighIsParent = false;
+    private bool playerDead = false;
 
     // Use this for initialization
     void Start()
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
         playerTransform = GetComponent<Transform>();
         sleighTransform = sleighController.GetComponent<Transform>();
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
+        playerWalkingAnimations = GetComponent<HuskyTestScript>();
 
         sleighController.IsEnabled = true;
     }
@@ -44,18 +47,26 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GlobalGameState.EndXPosition = transform.position.x;
+        if (GlobalGameState.Food < 3 * float.Epsilon && !playerDead)
+        {
+            //STARVED TO DEATH
+            playerDead = true;
+            sleighTargetVelocity = 0f;
+        }
+
+        if (!playerDead)
+            GlobalGameState.EndXPosition = transform.position.x;
 
         float sprint = 1;
 
-        if (Input.GetKey(sprintKey))
+        if (GetKey(sprintKey))
             sprint = sprintMultiplyer;
 
-        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f * sprint;
+        var x = GetAxisInput("Horizontal") * Time.deltaTime * 3.0f * sprint;
 
         lookDirection = x > 0 ? Vector2.right : Vector2.left;
 
-        var isJumpKeyDown = Input.GetKeyDown(jumpKey) || Input.GetAxis("Vertical") > float.Epsilon;
+        var isJumpKeyDown = GetKeyDown(jumpKey) || GetAxisInput("Vertical") > float.Epsilon;
 
         var isOnSleight = IsOnElement("sleigh");
         var isOnFloor = IsOnElement("floor");
@@ -73,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
             sleighTargetVelocity = 0;
         }
 
-        if (sleighIsParent && Input.GetKeyDown(interactionKey))
+        if (sleighIsParent && GetKeyDown(interactionKey))
         {
             sleighTargetVelocity += 0.3f;
         }
@@ -104,6 +115,30 @@ public class PlayerMovement : MonoBehaviour
         {
             DrawDebugInformation();
         }
+    }
+
+    private bool GetKey(KeyCode key)
+    {
+        if (playerDead)
+            return false;
+
+        return Input.GetKey(key);
+    }
+
+    private bool GetKeyDown(KeyCode key)
+    {
+        if (playerDead)
+            return false;
+
+        return Input.GetKeyDown(key);
+    }
+
+    private float GetAxisInput(string axis)
+    {
+        if (playerDead)
+            return 0f;
+
+        return Input.GetAxis(axis);
     }
 
     private bool IsOnElement(string name)

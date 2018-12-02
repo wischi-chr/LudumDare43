@@ -434,6 +434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Killable: 0
   ParticleSys: {fileID: 1171906536}
+  GameWorld: {fileID: 0}
 --- !u!1 &143812176
 GameObject:
   m_ObjectHideFlags: 0
@@ -10478,7 +10479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049c4f0d40aad7445824ef1aa53ad986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IdleHungerPointsPerSecond: 0.01
+  IdleHungerPointsPerSecond: 0.1
   VelocityXPointFactor: 0.002
   VelocityYPointFactor: 0.001
 --- !u!1 &1155361469
@@ -15235,6 +15236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Killable: 0
   ParticleSys: {fileID: 1472662744}
+  GameWorld: {fileID: 0}
 --- !u!1001 &1261623032
 Prefab:
   m_ObjectHideFlags: 0
@@ -15637,6 +15639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Killable: 0
   ParticleSys: {fileID: 662069854}
+  GameWorld: {fileID: 0}
 --- !u!1 &1341607446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1465456959150088, guid: 08adfb52d6b1c31449e3f60a1dc02cac,
@@ -15685,6 +15688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Killable: 0
   ParticleSys: {fileID: 1135137979}
+  GameWorld: {fileID: 0}
 --- !u!1 &1369859994
 GameObject:
   m_ObjectHideFlags: 0
