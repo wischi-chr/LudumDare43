@@ -7,36 +7,34 @@ public class DieHuskyDie : MonoBehaviour {
     public bool Killable = false;
     public ParticleSystem ParticleSys;
     public GameObject GameWorld;
+    public AudioClip whine;
 
     private Transform gameTransform;
-    private bool dead = false;
+    public bool Dead = false;
     private SpriteRenderer info;
-
+    private AudioSource audioSource;
+    
     // Use this for initialization
     void Start () {
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
         info = this.transform.Find("info").gameObject.GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(!dead && Killable && Input.GetKeyDown(KeyCode.F))
-        {
-            Kill();
-            dead = true;
-            GlobalGameState.DogsAlive--;
-
-        }
 	}
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Guy")
+        if (other.name == "Guy" && this.name == GlobalGameState.NextKillName)
         {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
+            info.enabled = true && !Dead;
+            audioSource.Play();
         }
-        info.enabled = true && !dead;
+        
     }
 
     public void OnTriggerExit2D(Collider2D other)
@@ -45,13 +43,15 @@ public class DieHuskyDie : MonoBehaviour {
         {
             Killable = false;
             Debug.Log(this.name + ": " + Killable);
+            info.enabled = false;
         }
-
-        info.enabled = false;
     }
 
-    private void Kill()
+    public void Kill()
     {
+        audioSource.clip = whine;
+        audioSource.Play();
+
         ParticleSys.Play();
         var animator = GetComponent<Animator>();
         animator.SetBool("Dead", true);
@@ -59,6 +59,10 @@ public class DieHuskyDie : MonoBehaviour {
         GlobalGameState.Food = 1f;
 
         this.transform.parent = gameTransform;
+
+        Dead = true;
+        GlobalGameState.DogsAlive--;
+        GlobalGameState.KillIndex++;
     }
 
 
