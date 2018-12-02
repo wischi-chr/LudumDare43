@@ -10,10 +10,12 @@ public class DieHuskyDie : MonoBehaviour {
 
     private Transform gameTransform;
     private bool dead = false;
+    private SpriteRenderer info;
 
     // Use this for initialization
     void Start () {
         gameTransform = GameObject.Find("Game").GetComponent<Transform>();
+        info = this.transform.Find("info").gameObject.GetComponent<SpriteRenderer>();
     }
 	
 	// Update is called once per frame
@@ -34,6 +36,7 @@ public class DieHuskyDie : MonoBehaviour {
             Killable = true;
             Debug.Log(this.name + ": " + Killable);
         }
+        info.enabled = true;
     }
 
     public void OnTriggerExit2D(Collider2D other)
@@ -43,6 +46,8 @@ public class DieHuskyDie : MonoBehaviour {
             Killable = false;
             Debug.Log(this.name + ": " + Killable);
         }
+
+        info.enabled = false;
     }
 
     private void Kill()
