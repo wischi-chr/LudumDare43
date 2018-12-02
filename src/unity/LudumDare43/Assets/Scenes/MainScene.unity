@@ -21059,6 +21059,7 @@ MonoBehaviour:
   HUD: {fileID: 444044386}
   SleighClickInfo: {fileID: 202984561}
   Player: {fileID: 1138364741}
+  MainCamera: {fileID: 1272898663}
 --- !u!4 &2039341973
 Transform:
   m_ObjectHideFlags: 0
