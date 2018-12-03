@@ -13,6 +13,7 @@ public class IntroHandlerScript : MonoBehaviour
     public GameObject SleighClickInfo;
     public GameObject Player;
     public GameObject MainCamera;
+    public int Offset = 25;
 
     RectTransform mainMenuTransform;
     RectTransform logoTransform;
@@ -251,10 +252,10 @@ public class IntroHandlerScript : MonoBehaviour
                 //transition to normal game-mode
                 Debug.Log("Switch to game mode " + passedTime);
 
-                int offset = 20;
+                
                 GlobalGameState.Food = 1;
                 Player.SetActive(true);
-                Player.transform.position = new Vector3(Sleigh.transform.position.x + offset, Player.transform.position.y, Player.transform.position.z);
+                Player.transform.position = new Vector3(Sleigh.transform.position.x + Offset, Player.transform.position.y, Player.transform.position.z);
 
                 GlobalGameState.StartXPosition = Player.transform.position.x;
             }
